@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/model/student_model.dart';
-import 'package:flutter_crud/services/api.dart';
+import 'package:flutter_crud/service/api.dart';
 import 'package:flutter_crud/updatepage.dart';
 import 'package:flutter_crud/createpage.dart';
 
@@ -22,14 +22,14 @@ class _ReadPageState extends State<ReadPage> {
 
   Future<void> _refreshData() async {
     setState(() {
-      studentsFuture = Api.getPerson(); // Refresh data
+      studentsFuture = Api.getPerson(); 
     });
   }
 
   Future<void> _deleteStudent(int id) async {
     try {
       await Api.deleteStudent(id);
-      _refreshData(); // Refresh data to reflect deletion
+      _refreshData(); 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Student deleted successfully")),
       );
@@ -97,7 +97,7 @@ class _ReadPageState extends State<ReadPage> {
                         ),
                       ).then((updated) {
                         if (updated == true) {
-                          _refreshData(); // Refresh data if updated
+                          _refreshData(); 
                         }
                       });
                     },
@@ -128,7 +128,7 @@ class _ReadPageState extends State<ReadPage> {
           } else {
             return Center(
               child: Text(
-                "NO DATA FOUND !",
+                "No Student Found!",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -151,7 +151,7 @@ class _ReadPageState extends State<ReadPage> {
         child: Icon(Icons.add),
         tooltip: 'Add New',
         backgroundColor: Color.fromARGB(255, 22, 21, 21),
-        foregroundColor: Colors.white, // Soft Blue
+        foregroundColor: Colors.white, 
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_crud/model/student_model.dart';
-import 'package:flutter_crud/services/api.dart';
+import 'package:flutter_crud/service/api.dart';
 
 class Updatepage extends StatefulWidget {
   final Student student;
