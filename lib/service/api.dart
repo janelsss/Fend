@@ -4,7 +4,7 @@ import 'package:flutter_crud/model/student_model.dart';
 import 'package:http/http.dart' as http;
 
 class Api {
-  static const baseUrl = "https://bend-delta.vercel.app/api";
+  static const baseUrl = "https://bend-delta.vercel.app/api/";
 
   // POST API
   static Future<void> addStudent(Map<String, dynamic> sdata) async {

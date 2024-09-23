@@ -43,7 +43,7 @@ class _ReadPageState extends State<ReadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F5), 
+      backgroundColor: Color(0xFFF5F5F5), // Greyish white background
       body: FutureBuilder<List<Student>>(
         future: studentsFuture,
         builder: (BuildContext context, AsyncSnapshot<List<Student>> snapshot) {
@@ -60,7 +60,7 @@ class _ReadPageState extends State<ReadPage> {
                     onPressed: _refreshData,
                     child: Text("Retry"),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, 
+                      foregroundColor: Colors.white, // Text color
                       backgroundColor: Color.fromARGB(255, 253, 254, 254), // Soft Blue
                     ),
                   ),
@@ -74,10 +74,10 @@ class _ReadPageState extends State<ReadPage> {
               itemCount: sdata.length,
               itemBuilder: (BuildContext context, int index) {
                 return Dismissible(
-                  key: Key(sdata[index].id.toString()), 
+                  key: Key(sdata[index].id.toString()), // Unique key for each item
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) async {
-                    await _deleteStudent(sdata[index].id); 
+                    await _deleteStudent(sdata[index].id); // Call delete function
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Student deleted successfully")),
                     );

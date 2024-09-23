@@ -17,11 +17,11 @@ class Student {
 
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
-      id: json['id'],
-      firstname: json['firstname'],
-      lastname: json['lastname'],
-      course: json['course'],
-      year: json['year'],
+      id: json['id'] ?? 0,
+      firstname: json['firstname'] ?? '',
+      lastname: json['lastname']?? '',
+      course: json['course']?? '',
+      year: json['year'] is String ? json['year'] : '',
       enrolled: json['enrolled'] == 'true',
     );
   }
