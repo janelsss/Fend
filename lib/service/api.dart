@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class Api {
   static const baseUrl = "https://bend-delta.vercel.app/api/";
 
-  // POST API
+  // POST API - Add Student
   static Future<void> addStudent(Map<String, dynamic> sdata) async {
     sdata['enrolled'] = sdata['enrolled'].toString();
 
@@ -29,7 +29,7 @@ class Api {
     }
   }
 
-  // GET API
+  // GET API - Fetch Students
   static Future<List<Student>> getPerson() async {
     List<Student> students = [];
 
@@ -60,9 +60,8 @@ class Api {
 
   // PUT API - Update Student
   static Future<void> updateStudent(
-      int id, Map<String, dynamic> updatedData) async {
-    updatedData['enrolled'] = updatedData['enrolled']
-        .toString();
+      String id, Map<String, dynamic> updatedData) async {
+    updatedData['enrolled'] = updatedData['enrolled'].toString();
 
     var url = Uri.parse(baseUrl + "update_student/$id");
 
@@ -83,8 +82,8 @@ class Api {
     }
   }
 
-  // DELETE API 
-  static Future<void> deleteStudent(int id) async {
+  // DELETE API - Delete Student
+  static Future<void> deleteStudent(String id) async {
     var url = Uri.parse(baseUrl + "delete_student/$id");
 
     try {

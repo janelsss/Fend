@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_crud/service/api.dart';
+import 'package:flutter_crud/service/api.dart'; // Ensure this points to your API service
+import 'package:flutter_crud/model/student_model.dart';
 
 class CreatePage extends StatefulWidget {
   const CreatePage({super.key});
@@ -34,7 +35,7 @@ class _CreatePageState extends State<CreatePage> {
                     color: Colors.black.withOpacity(0.1),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3), // Shadow position
+                    offset: const Offset(0, 3), // Shadow position
                   ),
                 ],
               ),
@@ -43,7 +44,7 @@ class _CreatePageState extends State<CreatePage> {
                 children: [
                   TextField(
                     controller: firstNameController,
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'First Name',
                       labelStyle: TextStyle(color: Colors.grey[600]),
@@ -52,15 +53,16 @@ class _CreatePageState extends State<CreatePage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 60, 62, 63)), 
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 60, 62, 63)),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: lastnameController,
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'Last Name',
                       labelStyle: TextStyle(color: Colors.grey[600]),
@@ -69,12 +71,13 @@ class _CreatePageState extends State<CreatePage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 60, 62, 63)), 
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 60, 62, 63)),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   DropdownButtonFormField<String>(
                     value: selectedCourse,
                     items: <String>[
@@ -88,7 +91,8 @@ class _CreatePageState extends State<CreatePage> {
                     ].map((String course) {
                       return DropdownMenuItem<String>(
                         value: course,
-                        child: Text(course, style: TextStyle(color: Colors.black)),
+                        child: Text(course,
+                            style: const TextStyle(color: Colors.black)),
                       );
                     }).toList(),
                     decoration: InputDecoration(
@@ -99,7 +103,8 @@ class _CreatePageState extends State<CreatePage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 60, 62, 63)), 
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 60, 62, 63)),
                       ),
                     ),
                     dropdownColor: Colors.white,
@@ -109,10 +114,11 @@ class _CreatePageState extends State<CreatePage> {
                       });
                     },
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: yearController,
-                    style: TextStyle(color: Colors.black),
+                    keyboardType: TextInputType.number, // Ensure numeric input
+                    style: const TextStyle(color: Colors.black),
                     decoration: InputDecoration(
                       labelText: 'Year',
                       labelStyle: TextStyle(color: Colors.grey[600]),
@@ -121,12 +127,13 @@ class _CreatePageState extends State<CreatePage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Color.fromARGB(255, 60, 62, 63)), 
+                        borderSide: BorderSide(
+                            color: const Color.fromARGB(255, 60, 62, 63)),
                         borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -141,28 +148,47 @@ class _CreatePageState extends State<CreatePage> {
                             isEnrolled = value;
                           });
                         },
-                        activeColor:Colors.grey.shade300, 
+                        activeColor: Colors.grey.shade300,
                         activeTrackColor: Colors.grey[600],
                         inactiveThumbColor: Colors.grey,
                         inactiveTrackColor: Colors.grey.shade300,
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () async {
+                      // Validate input fields
+                      if (firstNameController.text.isEmpty ||
+                          lastnameController.text.isEmpty ||
+                          yearController.text.isEmpty ||
+                          selectedCourse == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please fill out all fields.'),
+                          ),
+                        );
+                        return; // Exit if validation fails
+                      }
+
                       var data = {
                         "firstname": firstNameController.text,
                         "lastname": lastnameController.text,
-                        "year": yearController.text,
+                        "year": int.tryParse(
+                            yearController.text), // Convert year to int
                         "course": selectedCourse,
-                        "enrolled": isEnrolled.toString(),
+                        "enrolled": isEnrolled, // Send as boolean
                       };
 
+                      print(
+                          'Data to send: $data'); // Debugging line to see the data
+
                       try {
-                        await Api.addStudent(data);
-                        Navigator.pop(context, true); 
+                        await Api.addStudent(
+                            data); // Ensure Api.addStudent is implemented
+                        Navigator.pop(context, true);
                       } catch (e) {
+                        print('Error: $e'); // Print error for debugging
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Error adding student: $e'),
@@ -170,11 +196,11 @@ class _CreatePageState extends State<CreatePage> {
                         );
                       }
                     },
-                    child: Text("Submit"),
+                    child: const Text("Submit"),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color.fromARGB(255, 247, 242, 242), 
-                      backgroundColor: Color.fromARGB(255, 22, 21, 21), 
-                      padding: EdgeInsets.symmetric(vertical: 14),
+                      foregroundColor: const Color.fromARGB(255, 247, 242, 242),
+                      backgroundColor: const Color.fromARGB(255, 22, 21, 21),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

@@ -22,14 +22,15 @@ class _ReadPageState extends State<ReadPage> {
 
   Future<void> _refreshData() async {
     setState(() {
-      studentsFuture = Api.getPerson(); 
+      studentsFuture = Api.getPerson();
     });
   }
 
-  Future<void> _deleteStudent(int id) async {
+  Future<void> _deleteStudent(String id) async {
+    // Change int to String
     try {
       await Api.deleteStudent(id);
-      _refreshData(); 
+      _refreshData();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Student deleted successfully")),
       );
@@ -43,7 +44,7 @@ class _ReadPageState extends State<ReadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF5F5F5), // Greyish white background
+      backgroundColor: Color(0xFFF5F5F5),
       body: FutureBuilder<List<Student>>(
         future: studentsFuture,
         builder: (BuildContext context, AsyncSnapshot<List<Student>> snapshot) {
@@ -60,8 +61,8 @@ class _ReadPageState extends State<ReadPage> {
                     onPressed: _refreshData,
                     child: Text("Retry"),
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, // Text color
-                      backgroundColor: Color.fromARGB(255, 253, 254, 254), // Soft Blue
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color.fromARGB(255, 253, 254, 254),
                     ),
                   ),
                 ],
@@ -74,10 +75,10 @@ class _ReadPageState extends State<ReadPage> {
               itemCount: sdata.length,
               itemBuilder: (BuildContext context, int index) {
                 return Dismissible(
-                  key: Key(sdata[index].id.toString()), // Unique key for each item
+                  key: Key(sdata[index].id),
                   direction: DismissDirection.endToStart,
                   onDismissed: (direction) async {
-                    await _deleteStudent(sdata[index].id); // Call delete function
+                    await _deleteStudent(sdata[index].id);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text("Student deleted successfully")),
                     );
@@ -93,11 +94,12 @@ class _ReadPageState extends State<ReadPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Updatepage(student: sdata[index]),
+                          builder: (context) =>
+                              Updatepage(student: sdata[index]),
                         ),
                       ).then((updated) {
                         if (updated == true) {
-                          _refreshData(); 
+                          _refreshData();
                         }
                       });
                     },
@@ -106,17 +108,16 @@ class _ReadPageState extends State<ReadPage> {
                       elevation: 5,
                       child: ListTile(
                         leading: Icon(Icons.person_2_rounded, size: 35),
-                        title: Text("First Name: ${sdata[index].firstname}", style: TextStyle(color: Colors.white)),
-                        subtitle: Text("Last Name: ${sdata[index].lastname}", style: TextStyle(color: Colors.white)),
+                        title: Text("First Name: ${sdata[index].firstname}"),
+                        subtitle: Text("Last Name: ${sdata[index].lastname}"),
                         trailing: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("Course: ${sdata[index].course}", style: TextStyle(color:Colors.white)),
-                            Text("Year: ${sdata[index].year}", style: TextStyle(color: Colors.white)),
+                            Text("Course: ${sdata[index].course}"),
+                            Text("Year: ${sdata[index].year}"),
                             Text(
-                                "Enrolled: ${sdata[index].enrolled == true ? 'Yes' : 'No'}",
-                                style: TextStyle(color: Colors.white)),
+                                "Enrolled: ${sdata[index].enrolled == true ? 'Yes' : 'No'}"),
                           ],
                         ),
                       ),
@@ -126,7 +127,7 @@ class _ReadPageState extends State<ReadPage> {
               },
             );
           } else {
-            return Center(
+            return const Center(
               child: Text(
                 "No Student Found!",
                 style: TextStyle(
@@ -140,18 +141,17 @@ class _ReadPageState extends State<ReadPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(
+          Navigator.of(context)
+              .push(
             MaterialPageRoute(builder: (_) => CreatePage()),
-          ).then((result) {
+          )
+              .then((result) {
             if (result == true) {
-              _refreshData(); // Refresh data if created
+              _refreshData();
             }
           });
         },
-        child: Icon(Icons.add),
-        tooltip: 'Add New',
-        backgroundColor: Color.fromARGB(255, 22, 21, 21),
-        foregroundColor: Colors.white, 
+        child: const Icon(Icons.add),
       ),
     );
   }

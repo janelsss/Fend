@@ -1,5 +1,5 @@
 class Student {
-  int id;
+  String id;
   String firstname;
   String lastname;
   String course;
@@ -17,23 +17,25 @@ class Student {
 
   factory Student.fromJson(Map<String, dynamic> json) {
     return Student(
-      id: json['id'] ?? 0,
+      id: json['_id'] ?? '',
       firstname: json['firstname'] ?? '',
       lastname: json['lastname'] ?? '',
       course: json['course'] ?? '',
-      year: json['year'] != null ? json['year'].toString() : '', // Updated to handle null
-      enrolled: json['enrolled'] is bool ? json['enrolled'] : (json['enrolled'] == 'true'),
+      year: json['year'] != null ? json['year'].toString() : '',
+      enrolled: json['enrolled'] is bool
+          ? json['enrolled']
+          : (json['enrolled'] == 'true'),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      '_id': id,
       'firstname': firstname,
       'lastname': lastname,
       'course': course,
       'year': year,
-      'enrolled': enrolled, // Directly using the boolean value
+      'enrolled': enrolled,
     };
   }
 }
